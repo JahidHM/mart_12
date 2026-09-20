@@ -39,8 +39,12 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="fw-bold mb-3">Categories</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{route('products')}}" class="text-white-50 text-decoration-none">Fresh
-                                Fruits</a></li>
+                          @php
+                      $product_categories = \App\Models\ProductCategory::where('show_on_home', 1)->orderBy('name', 'asc')->get();
+                       @endphp
+                             @foreach ($product_categories as $item )
+                        <li class="mb-2"><a href="{{route('products')}}" class="text-white-50 text-decoration-none">{{$item->name}}</a></li>
+                                @endforeach
 
                     </ul>
                 </div>

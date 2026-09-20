@@ -50,7 +50,7 @@
                                                     <td class="pt_10 pb_10">
                                                         
                                                       <a href="{{ route('admin_product_category_edit',$item->id) }}" class="btn btn-primary"> <i class="fas fa-edit"></i></a>
-                                                        <a href="{{route('admin_product_category_delete',$item->id)}}" class="btn btn-danger" onClick="return confirm('Are you sure?. you went to delete this products');"><i class="fas fa-trash"></i></a>
+                                                        <a href="{{route('admin_product_category_delete',$item->id)}}" class="btn btn-danger" onClick="return confirm('Are you sure?. you went to delete this products Category');"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                     <div class="modal fade" id="modal_1" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">

@@ -32,36 +32,18 @@
                                 All Products
                             </label>
                         </div>
+                          @php
+                      $product_categories = \App\Models\ProductCategory::where('show_on_home', 1)->orderBy('name', 'asc')->get();
+                       @endphp
+                             @foreach ($product_categories as $item )
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catFruits">
-                            <label class="form-check-label" for="catFruits">
-                                Fresh Fruits
+                            <input class="form-check-input" type="radio" name="category" id="cat-{{$item->slug}}">
+                            <label class="form-check-label" for="cat-{{$item->slug}}">
+                               {{$item->name}}
                             </label>
                         </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catDairy">
-                            <label class="form-check-label" for="catDairy">
-                                Fresh Vegetables
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catMeat">
-                            <label class="form-check-label" for="catMeat">
-                                Seafood & Meat
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catBakery">
-                            <label class="form-check-label" for="catBakery">
-                                Grains & Pulses
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catBeverages">
-                            <label class="form-check-label" for="catBeverages">
-                                Condiments & Beverages
-                            </label>
-                        </div>
+                       @endforeach
+                       
                     </div>
 
                     <!-- Price Filter -->
@@ -234,23 +216,23 @@
 
                 <!-- Products Grid -->
                 <div class="row g-4">
-                    <!-- Product 1 -->
+                    @foreach ( $products as $product)
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="card product-card h-100 border-0 shadow-sm">
                             <div class="position-relative">
-                                <a href="{{route('products_single',1)}}">
+                                <a href="{{route('products_single',$product->slug)}}">
                                     <div class="product-image bg-light d-flex align-items-center justify-content-center overflow-hidden">
-                                        <img src="images/Green Apple.jpg" alt="Fresh Green Apples" class="img-fluid w-100 h-100">
+                                       <img src="{{ asset('uploads/' . $product->photo) }}"  alt="{{ $product->name }}" class="img-fluid w-100 h-100">
                                     </div>
                                 </a>
-                                <span class="badge bg-danger position-absolute top-0 end-0 m-2">-20%</span>
+                                
                                 <button class="btn btn-sm btn-primary position-absolute bottom-0 end-0 m-2">
                                     <i class="bi bi-cart-plus"></i>
                                 </button>
                             </div>
                             <div class="card-body">
-                                <p class="small text-muted mb-1">Fruits</p>
-                                <h6 class="card-title"><a href="product-single.html" class="text-decoration-none text-dark">Fresh Green Apples</a></h6>
+                                <p class="small text-muted mb-1">{{ $product->product_category->name}}</p>
+                                <h6 class="card-title"><a href="product-single.html" class="text-decoration-none text-dark">{!! $product->name  !!}</a></h6>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-warning">
                                         <i class="bi bi-star-fill"></i>
@@ -261,15 +243,24 @@
                                     </span>
                                     <small class="text-muted ms-2">(4.5)</small>
                                 </div>
+
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <span class="text-primary fw-bold fs-5">$4.99</span>
-                                        <span class="text-muted text-decoration-line-through small ms-1">$6.99</span>
+                                        @foreach ($product->product_variations as $item )
+                                              <span class="text-primary fw-bold fs-5">tk{{$item->sale_price}}</span>
+                                        <span class="text-muted text-decoration-line-through small ms-1">tk{{$item->regular_price}}</span>
+                                       @break
+                                        @endforeach
+                                      
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                        
+                    @endforeach
+                    <!-- Product 1 -->
+                    
 
                     <!-- Add more products as needed (repeat structure) -->
                     <!-- Product 4-12 would go here -->

@@ -36,14 +36,14 @@
                         
                         </li>
 
-                         <li class="nav-item dropdown {{ Request::is('admin/user*') ? 'active' : '' }}">
+                         <li class="nav-item dropdown {{ request()->is(['admin/product-category/*', 'admin/product/*']) ? 'active' : '' }}">
                         <a href="#" class="nav-link has-dropdown">
                             <i class="fas fa-folder"></i>
                             <span>Manage Products</span>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li class="{{ Request::is('/product-category') ? 'active' : '' }}">
+                            <li class="{{ Request::is('/product-category') ? 'active' : ''  }}">
                                 <a class="nav-link" href="{{route('admin_product_category_index')}}">
                                     <i class="fas fa-window-restore"></i>
                                     Categories
@@ -56,9 +56,22 @@
                                     Add  Categories
                                 </a>
                             </li>
+                             <li class="{{ Request::is('/product/create') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{route('admin_product_create')}}">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Creat Product 
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('/product/index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{route('admin_product_index')}}">
+                                    <i class="fas fa-window-restore"></i>
+                                    All Products
+                                </a>
+                            </li>
                         </ul>
                         
                         </li>
+                        
                     </ul>
 
             </aside>

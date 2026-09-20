@@ -6,7 +6,7 @@
             </div>
             <div class="row g-4">
                 @foreach ($product_categories as $item )
-                    <div class="col-lg-2 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-4 col-6">
                     <div
                         class="category-card text-center px-3 bg-primary rounded-3 h-100 d-flex flex-column align-items-center justify-content-between">
                         <h6 class="text-white fw-bold mb-0">{{$item?->name}}</h6>

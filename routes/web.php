@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\User\UserController;
@@ -75,4 +76,16 @@ Route::post('/product-category/submit',[AdminProductCategoryController::class,'p
 Route::get('/product-category/edit/{id}',[AdminProductCategoryController::class,'product_category_edit'])->name('admin_product_category_edit');
 Route::put('/product-category/update/{id}',[AdminProductCategoryController::class,'product_category_update'])->name('adminproduct_category_update');
 Route::get('/product-category/delete/{id}',[AdminProductCategoryController::class,'product_category_delete'])->name('admin_product_category_delete');
+// product routes
+Route::get('/product/index',[AdminProductController::class,'product_index'])->name('admin_product_index');
+Route::get('/product/create',[AdminProductController::class,'product_create'])->name('admin_product_create');
+Route::post('/product/submit',[AdminProductController::class,'product_submit'])->name('admin_product_submit');
+Route::get('/product/edit/{id}',[AdminProductController::class,'product_edit'])->name('admin_product_edit');
+Route::put('/product/update/{id}',[AdminProductController::class,'product_update'])->name('admin_product_update');
+Route::get('/product/delete/{id}',[AdminProductController::class,'product_delete'])->name('admin_product_delete');
+// product Variations
+Route::get('/product/variation/{id}',[AdminProductController::class,'product_variations'])->name('admin_product_variation');
+Route::post('/product-variation/submit/{id}',[AdminProductController::class,'product_variation_submit'])->name('admin_product_variation_submit'); 
+Route::put('/product-variation/update/{id}',[AdminProductController::class,'product_variation_update'])->name('admin_product_variation_update');
+Route::get('/product-variation/delete/{id}',[AdminProductController::class,'product_variation_delete'])->name('admin_product_variation_delete');
 });

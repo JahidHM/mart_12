@@ -74,4 +74,5 @@ class AdminProductCategoryController extends Controller
 
         return redirect()->route('admin_product_category_index')->with('success', 'Product Category Deleted Successfully.');
     }
+  
 }
