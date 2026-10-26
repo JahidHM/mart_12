@@ -70,7 +70,7 @@
                            @foreach ($product->product_variations as $variation )
                         <h3 class="text-primary fw-bold d-inline" id="currentPrice">Tk{{$variation->sale_price}}</h3>
                         @if ($variation->regular_price && $variation->regular_price >0)
-                        <span class="text-muted text-decoration-line-through fs-5 ms-2" id="originalPrice">TK{{$variation->regular_price}}</span>
+                        <span class="text-danger text-decoration-line-through fs-5 ms-2" id="originalPrice">TK{{$variation->regular_price}}</span>
                         @else
                              <span class="text-danger text-decoration-line-through fs-5 ms-2 d-none" id="originalPrice">TK{{$variation->regular_price}}</span>
                             
@@ -387,7 +387,7 @@ var baseOriginalPrice = <?php echo $baseOriginalPrice ?: 0; ?>;
     }
     // Update Discount Bodge based an selected weight
    function updateDiscountBadge(salePrice, regularPrice) {
-    var discountPercent = 0;
+    
 
     if (regularPrice  && regularPrice > 0 &&  regularPrice > salePrice ) {
        var  discountPercent = Math.round(
@@ -420,10 +420,10 @@ var baseOriginalPrice = <?php echo $baseOriginalPrice ?: 0; ?>;
             $('#originalPrice').text('Tk'+ baseOriginalPrice.toFixed(2));
             // Show or hide Original price based on its volue
             if(baseOriginalPrice && baseOriginalPrice >0){
-                $('#baseOriginalPrice').text('Tk'+ baseOriginalPrice.toFixed(2)).removeClass('d-none');
+                $('#originalPrice').text('Tk'+ baseOriginalPrice.toFixed(2)).removeClass('d-none');
             }
             else{
-                 $('$baseOriginalPrice').addClass('d-none');
+                 $('#originalPrice').addClass('d-none');
             }
              updateStockStatus(baseStock);
           updateDiscountBadge(baseUnitPrice , baseOriginalPrice);

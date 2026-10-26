@@ -22,22 +22,26 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4">
-                <div class="sidebar">
+                <form action="{{route('products')}}" method="GET" id="product_form"> 
+                    
+                    
+                    <div class="sidebar">
                     <!-- Categories Filter -->
                     <div class="filter-widget mb-4">
                         <h5 class="fw-bold mb-3">Categories</h5>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catAll" checked>
+                            <input class="form-check-input" type="radio" name="category" id="catAll" value="" checked>
                             <label class="form-check-label" for="catAll">
                                 All Products
                             </label>
                         </div>
-                          @php
-                      $product_categories = \App\Models\ProductCategory::where('show_on_home', 1)->orderBy('name', 'asc')->get();
-                       @endphp
+                         
                              @foreach ($product_categories as $item )
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="cat-{{$item->slug}}">
+                            <input class="form-check-input" type="radio" name="category"
+                             {{request('category') == $item->id ? 'checked': ''}} 
+                             value="{{$item->id}}" id="cat-{{$item->slug}}">
+                            
                             <label class="form-check-label" for="cat-{{$item->slug}}">
                                {{$item->name}}
                             </label>
@@ -49,36 +53,16 @@
                     <!-- Price Filter -->
                     <div class="filter-widget mb-4">
                         <h5 class="fw-bold mb-3">Price Range</h5>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="priceAll" checked>
-                            <label class="form-check-label" for="priceAll">
-                                All Prices
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price1">
-                            <label class="form-check-label" for="price1">
-                                Under $5
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price2">
-                            <label class="form-check-label" for="price2">
-                                $5 - $10
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price3">
-                            <label class="form-check-label" for="price3">
-                                $10 - $20
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price4">
-                            <label class="form-check-label" for="price4">
-                                $20 & Above
-                            </label>
-                        </div>
+                         <div class="price d-flex justify-content-start">
+                            <div class="min mr_10">
+                               <input class="form-control" type="number"  name="min_price" value="{{request('min_price')}}"mim="0" placeholder="Min">
+                            </div>
+                            <div class="max">
+                                <input class="form-control" type="number"  name="max_price"  value="{{request('max_price')}}" placeholder="Max">
+                            </div>
+                           </div>
+                        
+               
                     </div>
 
                     <!-- Rating Filter -->
@@ -152,64 +136,33 @@
                         </div>
                     </div>
 
-                    <!-- Brand Filter -->
-                    <div class="filter-widget mb-4">
-                        <h5 class="fw-bold mb-3">Brand</h5>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="brand" id="brandAll" checked>
-                            <label class="form-check-label" for="brandAll">
-                                All Brands
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="brand" id="brand1">
-                            <label class="form-check-label" for="brand1">
-                                Fresh Harvest
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="brand" id="brand2">
-                            <label class="form-check-label" for="brand2">
-                                Organic Valley
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="brand" id="brand3">
-                            <label class="form-check-label" for="brand3">
-                                Green Farms
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="brand" id="brand4">
-                            <label class="form-check-label" for="brand4">
-                                Nature's Best
-                            </label>
-                        </div>
-                    </div>
-
+                   
+                 <input type="hidden" name="sort" id="sortField" value="{{request('sort')}}">
                     <!-- Reset Filters Button -->
-                    <button class="btn btn-outline-primary w-100">
+                    <button type="submit" class="btn btn-outline-primary w-100">
                         <i class="bi bi-arrow-clockwise me-2"></i>Reset Filters
                     </button>
                 </div>
             </div>
+                </form>
+            
 
             <!-- Products Grid -->
             <div class="col-lg-9 col-md-8">
                 <!-- Toolbar -->
                 <div class="products-toolbar d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded">
                     <div>
-                        <p class="mb-0 text-muted">Showing <strong>1-12</strong> of <strong>48</strong> results</p>
+                        <p class="mb-0 text-muted">Showing <strong>{{$products->firstItem() }}-{{$products->lastItem() }}</strong> of <strong>{{$products->total() }}</strong> results</p>
                     </div>
                     <div class="d-flex align-items-center">
-                        <label class="me-2 mb-0">Sort by:</label>
-                        <select class="form-select form-select-sm">
-                            <option>Default</option>
-                            <option>Price: Low to High</option>
-                            <option>Price: High to Low</option>
-                            <option>Name: A to Z</option>
-                            <option>Name: Z to A</option>
-                            <option>Rating: High to Low</option>
+                        <label class="me-2 mb-0" style="width:100px;">Sort by:</label>
+                        <select class="form-select form-select-sm name="sort" id="sortDropdown">
+                            <option value="">Default</option>
+                            <option value="price_asc"{{ request('sort') == 'price_asc' ? 'selected' :''}}>Price: Low to High</option>
+                            <option value="price_desc"{{ request('sort')== 'price_desc' ? 'selected':''}}>Price: High to Low</option>
+                            <option value="name_asc"{{ request('sort')== 'name_asc' ? 'selected':''}}>Name: A to Z</option>
+                            <option value="name_desc"{{ request('sort')== 'name_desc' ? 'selected':''}}>Name: Z to A</option>
+                            <option value="rating_desc"{{ request('sort')== 'rating_desc' ? 'selected':''}}>Rating: High to Low</option>
                         </select>
                     </div>
                 </div>
@@ -248,7 +201,10 @@
                                     <div>
                                         @foreach ($product->product_variations as $item )
                                               <span class="text-primary fw-bold fs-5">tk{{$item->sale_price}}</span>
-                                        <span class="text-muted text-decoration-line-through small ms-1">tk{{$item->regular_price}}</span>
+                                              @if ($item->regular_price != 0)
+                                                  <span class="text-muted text-decoration-line-through small ms-1">tk{{$item->regular_price}}</span>
+                                              @endif
+                                        
                                        @break
                                         @endforeach
                                       
@@ -266,10 +222,18 @@
                     <!-- Product 4-12 would go here -->
                     
                 </div>
+                <style>
+                    /* product navigation*/
+                        .product-nav {
+                        display:flex;
+                        justify-content: center;
+                        }
+                </style>
 
                 <!-- Pagination -->
-                <nav aria-label="Page navigation" class="mt-5">
-                    <ul class="pagination justify-content-center">
+                <div aria-label="Page navigation  " class="product-nav" class="mt-5">
+                   {{ $products->appends(request()->query())->links() }}
+                    <!-- <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Previous</a>
                         </li>
@@ -280,8 +244,8 @@
                         <li class="page-item">
                             <a class="page-link" href="#">Next</a>
                         </li>
-                    </ul>
-                </nav>
+                    </ul> -->
+                </div>
             </div>
         </div>
     </div>
@@ -292,3 +256,13 @@
 
 
  @endsection
+ @push('scripts')
+<script>
+    $('#sortDropdown').on('change', function(){
+        var sortValue = $(this).val();
+        $('#sortField').val(sortValue);
+        $('#product_form').submit();
+       
+    });
+</script>
+@endpush

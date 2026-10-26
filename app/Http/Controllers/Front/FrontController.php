@@ -28,9 +28,42 @@ class FrontController extends Controller
  public function blog(){
   return view('front.pages.blog');
  }
-  public function products(){
-     $products = Product::where('show_on_home',1)->orderBy('name','asc')->get();
-  return view('front.pages.products',compact('products'));
+  public function products(Request $request){
+     $product_categories = ProductCategory::orderBy('name', 'asc')->get();
+     $products = product::query();
+    //  $products = Product::where('show_on_home',1)->orderBy('id','asc');
+     if($request->category!=null &&  $request->category != ""){
+      $products = $products->where('product_category_id', $request->category);
+     }
+     if($request->min_price !== null && $request->max_price !== null ){
+      $minPrice = $request->min_price;
+      $maxPrice = $request->max_price;
+      $products = $products->whereHas('product_variations', function($query) use ($minPrice,$maxPrice){
+        $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
+      });
+     }
+
+     
+       if ($request->sort != null && $request->sort != '') {
+            if ($request->sort == 'price_asc') {
+                $products = $products->orderByRaw('(SELECT MIN(sale_price) FROM product_variations WHERE product_variations.product_id = products.id) ASC');
+            } elseif ($request->sort == 'price_desc') {
+                $products = $products->orderByRaw('(SELECT MIN(sale_price) FROM product_variations WHERE product_variations.product_id = products.id) DESC');
+            } elseif ($request->sort == 'name_asc') {
+                $products = $products->orderBy('name', 'asc');
+            } elseif ($request->sort == 'name_desc') {
+                $products = $products->orderBy('name', 'desc');
+            } elseif ($request->sort == 'rating_desc') {
+                $products = $products->orderBy('average_rating', 'desc');
+            } else {
+                $products = $products->orderBy('id', 'asc');
+            }
+        }
+
+        $products = $products->paginate(12);
+       
+                       
+  return view('front.pages.products',compact('products','product_categories'));
     }
 public function products_single($slug) {
   
